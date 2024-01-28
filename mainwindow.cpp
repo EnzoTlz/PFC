@@ -1,12 +1,22 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-
+#include <iostream>
 MainWindow::MainWindow(QWidget *parent) //constructeur
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //connect(ui->btn_Test, SIGNAL(clicked(bool)), this ,SLOT(testClick()));
+    connect(ui->btn_Ciseaux, SIGNAL(clicked(bool)), this ,SLOT(PrintButtonCliked()));
+    connect(ui->btn_Papier, SIGNAL(clicked(bool)), this ,SLOT(PrintButtonCliked()));
+    connect(ui->btn_Pierre, SIGNAL(clicked(bool)), this ,SLOT(PrintButtonCliked()));
+    int test = GenerateNumberRandom();
+    std::cout << test << std::endl;
+}
+
+int MainWindow::GenerateNumberRandom()
+{
+    //
+    return rand()%(1-3+1)+1;
 }
 
 MainWindow::~MainWindow()
@@ -14,19 +24,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::BoutonClicked()
+
+//Afficher le texte recu en parametre
+void MainWindow::PrintButtonCliked()
 {
-    //Retourne le bouton le cliqué (ciseaux =1 &  pierre =2  & feuille =3)
-    if((ui->))
-}
-/*
-void MainWindow::testClick()
-{
-    ui->lab_TestOK->setText("J'ai cliqué");
+    QPushButton *ButtonClicked  = qobject_cast<QPushButton*>(sender());
+
+    if((ButtonClicked == ui->btn_Ciseaux)){
+        ui->lb_PrintResult->setText("1");
+    }else if(ButtonClicked == ui->btn_Papier){
+        ui->lb_PrintResult->setText("3");
+    }else if(ButtonClicked == ui->btn_Pierre){
+        ui->lb_PrintResult->setText("2");
+    }
 
 }
-*/
-
 
 
 
