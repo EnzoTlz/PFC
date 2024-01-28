@@ -16,10 +16,11 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    int GenerateNumberRandom();;
+    int GenerateNumberRandom();
+    int CompareNumberRandomAndUserNumber(int random,int user);
     ~MainWindow(); //destruteur
 public slots:
-    void PrintButtonCliked();
+    void ProcessGame();
 
 private:
     Ui::MainWindow *ui;
