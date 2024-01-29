@@ -19,9 +19,9 @@ int MainWindow::GenerateNumberRandom()
 
 int MainWindow::CompareNumberRandomAndUserNumber(int random, int user)
 {
-    // 1 ==> user win
-    // 2 ==> ordi win
-    // 0 ==> egalite
+    // 1 ==> user win       //Ciseaux === 1
+    // 2 ==> ordi win       //Pierre === 2
+    // 0 ==> egalite        //papier === 3
 
 
     // 1 < 2 // 1 > 3 //
@@ -29,19 +29,15 @@ int MainWindow::CompareNumberRandomAndUserNumber(int random, int user)
     // 3 > 2 // 3 < 1 //
 
     if (random == 1  && user == 2){
-        return 2;
-    }else if(random == 1 && user ==3){
-        return 1;
-    }else if(random == 2 && user ==1){
         return 1;
     }else if(random == 2 && user ==3){
-        return 2;
-    }else if(random == 3 && user ==1){
-        return 2;
-    }else if(random == 2 && user ==2){
         return 1;
-    }else{
+    }else if(random == 3 && user ==1){
+        return 1;
+    }else if(random == user){
         return 0;
+    }else{
+        return 2;
     }
 }
 
@@ -58,27 +54,51 @@ void MainWindow::ProcessGame()
 
     if((ButtonClicked == ui->btn_Ciseaux)){
         userNumber = 1;
-    }else if(ButtonClicked == ui->btn_Papier){
-        userNumber = 3;
+        ui->lb_PrintUser->setText("Vous avez choisi le ciseaux");
     }else if(ButtonClicked == ui->btn_Pierre){
         userNumber = 2;
+        ui->lb_PrintUser->setText("Vous avez choisi la pierre");
+    }else if(ButtonClicked == ui->btn_Papier){
+        userNumber = 3;
+        ui->lb_PrintUser->setText("Vous avez choisi le papier");
     }
-
+    // Affichage du label : ordinateurs
+    switch (randomNumber) {
+    case 1:
+        ui->lb_PrintOrdi->setText("L'ordinateur à choisi le ciseaux");
+        break;
+    case 2:
+        ui->lb_PrintOrdi->setText("L'ordinateur à choisi la pierre");
+        break;
+    case 3:
+        ui->lb_PrintOrdi->setText("L'ordinateur à choisi le papier");
+        break;
+    default:
+        break;
+    }
     int result = this->CompareNumberRandomAndUserNumber(randomNumber,userNumber);
-
+    // Aaffichage du label : user
+    int ScoreUser = 0;
+    int ScoreOrdi = 0;
     switch (result) {
     case 0:
         ui->lb_PrintResult->setText("égalité ");
         break;
     case 1:
         ui->lb_PrintResult->setText("Bravo vous avez gagner !");
+        ScoreUser++;
         break;
     case 2:
         ui->lb_PrintResult->setText("Vous avez perdu !");
+        ScoreOrdi++;
         break;
     default:
         break;
     }
+    std::cout << ScoreOrdi << std::endl;
+    QString scoreStringUser = QString::number(ScoreUser);
+    QString scoreStringOrdi = QString::number(ScoreOrdi);
+    ui->lb_Score->setText(scoreStringOrdi + " - " + scoreStringUser);
 }
 
 
