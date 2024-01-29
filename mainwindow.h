@@ -21,8 +21,12 @@ public:
     ~MainWindow(); //destruteur
 public slots:
     void ProcessGame();
+    void SetVisibilityLabelFalse();
+    void SetScore(int user , int random);
 
 private:
     Ui::MainWindow *ui;
+    int ScoreUser = 0;
+    int ScoreOrdi = 0;
 };
 #endif // MAINWINDOW_H

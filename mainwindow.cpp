@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) //constructeur
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->SetVisibilityLabelFalse();
+
     connect(ui->btn_Ciseaux, SIGNAL(clicked(bool)), this ,SLOT(ProcessGame()));
     connect(ui->btn_Papier, SIGNAL(clicked(bool)), this ,SLOT(ProcessGame()));
     connect(ui->btn_Pierre, SIGNAL(clicked(bool)), this ,SLOT(ProcessGame()));
@@ -48,56 +50,85 @@ MainWindow::~MainWindow()
 
 void MainWindow::ProcessGame()
 {
+
     QPushButton *ButtonClicked  = qobject_cast<QPushButton*>(sender());
     int randomNumber = this->GenerateNumberRandom();
     int userNumber = 0;
 
     if((ButtonClicked == ui->btn_Ciseaux)){
         userNumber = 1;
-        ui->lb_PrintUser->setText("Vous avez choisi le ciseaux");
+        ui->lb_CiseauxUser->setVisible(true);
+        ui->lb_FeuilleUser->setVisible(false);
+        ui->lb_PierreUser->setVisible(false);
     }else if(ButtonClicked == ui->btn_Pierre){
         userNumber = 2;
-        ui->lb_PrintUser->setText("Vous avez choisi la pierre");
+        ui->lb_CiseauxUser->setVisible(false);
+        ui->lb_FeuilleUser->setVisible(false);
+        ui->lb_PierreUser->setVisible(true);
     }else if(ButtonClicked == ui->btn_Papier){
         userNumber = 3;
-        ui->lb_PrintUser->setText("Vous avez choisi le papier");
+        ui->lb_CiseauxUser->setVisible(false);
+        ui->lb_FeuilleUser->setVisible(true);
+        ui->lb_PierreUser->setVisible(false);
     }
     // Affichage du label : ordinateurs
     switch (randomNumber) {
     case 1:
-        ui->lb_PrintOrdi->setText("L'ordinateur à choisi le ciseaux");
+        ui->lb_FeuilleOrdi->setVisible(false);
+        ui->lb_PierreOrdi->setVisible(false);
+        ui->lb_CiseauxOrdi->setVisible(true);
         break;
     case 2:
-        ui->lb_PrintOrdi->setText("L'ordinateur à choisi la pierre");
+        ui->lb_FeuilleOrdi->setVisible(false);
+        ui->lb_PierreOrdi->setVisible(true);
+        ui->lb_CiseauxOrdi->setVisible(false);
         break;
     case 3:
-        ui->lb_PrintOrdi->setText("L'ordinateur à choisi le papier");
+        ui->lb_FeuilleOrdi->setVisible(true);
+        ui->lb_PierreOrdi->setVisible(false);
+        ui->lb_CiseauxOrdi->setVisible(false);
         break;
     default:
         break;
     }
     int result = this->CompareNumberRandomAndUserNumber(randomNumber,userNumber);
     // Aaffichage du label : user
-    int ScoreUser = 0;
-    int ScoreOrdi = 0;
     switch (result) {
     case 0:
         ui->lb_PrintResult->setText("égalité ");
         break;
     case 1:
-        ui->lb_PrintResult->setText("Bravo vous avez gagner !");
-        ScoreUser++;
+        ui->lb_PrintResult->setText("Vous avez gagner !");
+        this->SetScore(1,0);
         break;
     case 2:
         ui->lb_PrintResult->setText("Vous avez perdu !");
-        ScoreOrdi++;
+        this->SetScore(0,1);
         break;
     default:
         break;
     }
-    std::cout << ScoreOrdi << std::endl;
-    QString scoreStringUser = QString::number(ScoreUser);
-    QString scoreStringOrdi = QString::number(ScoreOrdi);
+
+}
+
+void MainWindow::SetVisibilityLabelFalse()
+{
+    ui->lb_CiseauxOrdi->setVisible(false);
+    ui->lb_FeuilleOrdi->setVisible(false);
+    ui->lb_PierreOrdi->setVisible(false);
+
+    ui->lb_CiseauxUser->setVisible(false);
+    ui->lb_FeuilleUser->setVisible(false);
+    ui->lb_PierreUser->setVisible(false);
+}
+
+void MainWindow::SetScore(int user, int random)
+{
+
+    this->ScoreUser = this->ScoreUser + user;
+    this->ScoreOrdi = this->ScoreOrdi + random;
+    QString scoreStringUser = QString::number(this->ScoreUser);
+    QString scoreStringOrdi = QString::number(this->ScoreOrdi);
     ui->lb_Score->setText(scoreStringOrdi + " - " + scoreStringUser);
 }
 
