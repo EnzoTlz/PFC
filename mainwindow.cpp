@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include <iostream>
+
+#define CISEAUX 1
+
+//
+
 MainWindow::MainWindow(QWidget *parent) //constructeur
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -19,7 +24,7 @@ int MainWindow::GenerateNumberRandom()
     return rand()% 3+1;
 }
 
-int MainWindow::CompareNumberRandomAndUserNumber(int random, int user)
+int MainWindow::CompareNumberRandomAndUserNumber(int random, int user) //changer le nom
 {
     // 1 ==> user win       //Ciseaux === 1
     // 2 ==> ordi win       //Pierre === 2
@@ -30,17 +35,15 @@ int MainWindow::CompareNumberRandomAndUserNumber(int random, int user)
     // 2 > 1 // 2 < 3 //
     // 3 > 2 // 3 < 1 //
 
-    if (random == 1  && user == 2){
+    if(random == CISEAUX  && user == 2){
         return 1;
     }else if(random == 2 && user ==3){
         return 1;
-    }else if(random == 3 && user ==1){
+    }else if(random == 3 && user ==CISEAUX){
         return 1;
     }else if(random == user){
         return 0;
-    }else{
-        return 2;
-    }
+    }else{ return 2; }
 }
 
 MainWindow::~MainWindow()
@@ -50,13 +53,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::ProcessGame()
 {
-
     QPushButton *ButtonClicked  = qobject_cast<QPushButton*>(sender());
     int randomNumber = this->GenerateNumberRandom();
     int userNumber = 0;
 
+    //Affichage du label : user
     if((ButtonClicked == ui->btn_Ciseaux)){
-        userNumber = 1;
+        userNumber = CISEAUX;
         ui->lb_CiseauxUser->setVisible(true);
         ui->lb_FeuilleUser->setVisible(false);
         ui->lb_PierreUser->setVisible(false);
@@ -73,7 +76,7 @@ void MainWindow::ProcessGame()
     }
     // Affichage du label : ordinateurs
     switch (randomNumber) {
-    case 1:
+    case CISEAUX:
         ui->lb_FeuilleOrdi->setVisible(false);
         ui->lb_PierreOrdi->setVisible(false);
         ui->lb_CiseauxOrdi->setVisible(true);
@@ -92,7 +95,8 @@ void MainWindow::ProcessGame()
         break;
     }
     int result = this->CompareNumberRandomAndUserNumber(randomNumber,userNumber);
-    // Aaffichage du label : user
+
+    // Affichage du label : Résulat
     switch (result) {
     case 0:
         ui->lb_PrintResult->setText("égalité ");
