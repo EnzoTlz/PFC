@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,9 +19,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow(); //destruteur
     int GenerateNumberRandom();
-    int CompareNumberRandomAndUserNumber(int random,int user);
-    void SetVisibilityLabelFalse();
-    void SetScore(int user , int random);
+    int GetWinnerOfTheRound(int random,int user);
+    void SetScore(int winner);
+    int GetScoreUser();
+    int GetScoreOrdi();
+    void PrintScore(int scoreUser , int scoreOrdi);
+    void setImageInOrdiLabel(int value);
+    void setImageInUserLabel(int userValue);
+    int GetButtonClicked(QPushButton *ButtonClicked);
+    void PrintResultatOfTheRound(int winner);
 
 public slots:
     void ProcessGame();
@@ -28,7 +35,9 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    int ScoreUser = 0;
-    int ScoreOrdi = 0;
+    struct{
+        int ScoreUser = 0;
+        int ScoreOrdi = 0;
+    }score;
 };
 #endif // MAINWINDOW_H
